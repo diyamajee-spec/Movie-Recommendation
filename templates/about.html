@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5 my-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header Card -->
+            <div class="glass-card mb-5 text-center p-5 border-secondary rounded-lg shadow-2xl">
+                <span class="badge bg-danger mb-3 px-3 py-2 text-uppercase letter-spacing" style="font-weight: 700; border-radius: 30px;">
+                    Project Overview
+                </span>
+                <h1 class="text-white font-weight-black mb-3"><i class="fa-solid fa-graduation-cap text-danger me-2"></i>About CineRec</h1>
+                <h5 class="text-orange mb-3">Age-Based Multilingual Movie Recommendation System</h5>
+                <p class="text-muted leading-relaxed mx-auto mb-0" style="max-width: 800px;">
+                    CineRec is a state-of-the-art hybrid recommendation platform designed to demonstrate the power of **Natural Language Processing (NLP)** and **Machine Learning** in media discovery. By analyzing semantic text similarities in movie overviews and adjusting for user demographics, it delivers highly relevant, safe, and personalized suggestions.
+                </p>
+            </div>
+            
+            <!-- Objectives & Methodology -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="glass-card h-100 p-4 border-secondary rounded-lg">
+                        <h3 class="text-white font-weight-bold mb-3"><i class="fa-solid fa-bullseye text-danger me-2"></i>Core Objectives</h3>
+                        <ul class="text-muted leading-relaxed" style="padding-left: 20px;">
+                            <li class="mb-2"><strong class="text-white">Semantic Discoverability:</strong> Go beyond keyword search by analyzing full movie plots using TF-IDF and Cosine Similarity models.</li>
+                            <li class="mb-2"><strong class="text-white">Strict Content Boundaries:</strong> Safeguard younger audiences with rule-based age filters restricting sensitive categories.</li>
+                            <li class="mb-2"><strong class="text-white">Multilingual Capabilities:</strong> Seamlessly serve English, Hindi, Tamil, and Telugu movie titles.</li>
+                            <li><strong class="text-white">Premium Client UX:</strong> Provide an interactive, zero-latency filtering experience matching commercial platforms.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="glass-card h-100 p-4 border-secondary rounded-lg">
+                        <h3 class="text-white font-weight-bold mb-3"><i class="fa-solid fa-gears text-danger me-2"></i>Recommendation Pipeline</h3>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="bg-danger text-white rounded p-2 text-center" style="width: 40px; height: 40px; font-weight: bold; flex-shrink:0;">1</div>
+                                <div>
+                                    <h6 class="text-white mb-1">Demographics Filter</h6>
+                                    <p class="small text-muted mb-0">First, the system extracts movies matching the chosen language and age suitability rules.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="bg-danger text-white rounded p-2 text-center" style="width: 40px; height: 40px; font-weight: bold; flex-shrink:0;">2</div>
+                                <div>
+                                    <h6 class="text-white mb-1">TF-IDF Vectorization</h6>
+                                    <p class="small text-muted mb-0">Analyzes plot overviews using term-frequency metrics to capture context details.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="bg-danger text-white rounded p-2 text-center" style="width: 40px; height: 40px; font-weight: bold; flex-shrink:0;">3</div>
+                                <div>
+                                    <h6 class="text-white mb-1">Cosine Similarity & Weighting</h6>
+                                    <p class="small text-muted mb-0">Computes the plot similarity and blends it with popularity and voting metrics for final ranking.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Age Rules Card -->
+            <div class="glass-card mb-4 p-4 border-secondary rounded-lg">
+                <h3 class="text-white font-weight-bold mb-3"><i class="fa-solid fa-shield-halved text-danger me-2"></i>Age-Based Content Policies</h3>
+                <p class="text-muted leading-relaxed">To protect kids and teens from graphic violence, mature language, or horror, we employ strict genre filter restrictions:</p>
+                
+                <div class="table-responsive mt-3 border border-secondary rounded overflow-hidden">
+                    <table class="table table-dark table-striped table-bordered border-secondary mb-0 align-middle">
+                        <thead>
+                            <tr class="text-danger" style="background-color: #1e293b;">
+                                <th>Age Group</th>
+                                <th>Allowed Genres</th>
+                                <th>Safety Policy & Exclusions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold text-white">Kids (Ages 5-12)</td>
+                                <td><span class="badge bg-secondary-subtle text-white me-1">Animation</span> <span class="badge bg-secondary-subtle text-white me-1">Family</span> <span class="badge bg-secondary-subtle text-white me-1">Adventure</span> <span class="badge bg-secondary-subtle text-white me-1">Fantasy</span> <span class="badge bg-secondary-subtle text-white">Comedy</span></td>
+                                <td class="text-muted">Strictly excludes all Action, Drama, Thriller, Horror, Crime, War, Western, History, and adult-flagged movies.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-white">Teens (Ages 13-17)</td>
+                                <td>All Kids genres + <span class="badge bg-secondary-subtle text-white me-1">Action</span> <span class="badge bg-secondary-subtle text-white me-1">Science Fiction</span> <span class="badge bg-secondary-subtle text-white">Drama</span></td>
+                                <td class="text-muted">Allows general action, drama, and sci-fi. Excludes Horror, Crime, Thriller, War, Western, History, Music, Mystery, Romance, Documentary, and adult-flagged content.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-white">Adults (Ages 18+)</td>
+                                <td>All 18 genres</td>
+                                <td class="text-muted">Full catalog access with no restrictions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mathematical Model -->
+            <div class="glass-card mb-4 p-4 border-secondary rounded-lg">
+                <h3 class="text-white font-weight-bold mb-3"><i class="fa-solid fa-square-root-variable text-danger me-2"></i>Hybrid Scoring Model</h3>
+                <p class="text-muted leading-relaxed">Pure content text similarity can sometimes elevate obscure or low-rated titles. To deliver professional-grade suggestions, CineRec ranks movies using a weighted combination of cosine similarity, overall popularity, and user review averages:</p>
+                <div class="bg-dark p-3 border border-secondary rounded text-center my-4">
+                    <code class="text-orange fs-5 font-monospace font-weight-bold">Score = (50% * Similarity) + (30% * Popularity) + (20% * Rating)</code>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                            <h6 class="text-white font-weight-bold mb-2">50% Cosine Similarity</h6>
+                            <p class="small text-muted mb-0">Computes the cosine angle between the query vector and the movie plot TF-IDF vector.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                            <h6 class="text-white font-weight-bold mb-2">30% TMDB Popularity</h6>
+                            <p class="small text-muted mb-0">Normalized popularity weight based on view counts and search trends across TMDB.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                            <h6 class="text-white font-weight-bold mb-2">20% TMDB Rating</h6>
+                            <p class="small text-muted mb-0">Scaled voting average representing user reviews, ensuring higher quality recommendations rise to the top.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="glass-card p-4 border-secondary rounded-lg">
+                <h3 class="text-white font-weight-bold mb-3"><i class="fa-solid fa-server text-danger me-2"></i>Technology Stack</h3>
+                <div class="row g-4 text-center mt-2">
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-dark rounded border border-secondary">
+                            <i class="fa-brands fa-python text-orange fs-1 mb-2"></i>
+                            <h6 class="text-white mb-0">Python &amp; Flask</h6>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-dark rounded border border-secondary">
+                            <i class="fa-solid fa-brain text-orange fs-1 mb-2"></i>
+                            <h6 class="text-white mb-0">Scikit-Learn</h6>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-dark rounded border border-secondary">
+                            <i class="fa-brands fa-js text-orange fs-1 mb-2"></i>
+                            <h6 class="text-white mb-0">Vanilla JS (ES6)</h6>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-dark rounded border border-secondary">
+                            <i class="fa-brands fa-bootstrap text-orange fs-1 mb-2"></i>
+                            <h6 class="text-white mb-0">Bootstrap 5</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

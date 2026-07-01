@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card p-5 border-secondary rounded-lg shadow-2xl">
+                <h2 class="text-center text-white font-weight-black mb-3"><i class="fa-solid fa-envelope text-danger me-2"></i>Contact Us</h2>
+                <p class="text-center text-muted mb-5">Have questions about our hybrid recommendation algorithms, data sources, or want to give feedback? We would love to hear from you!</p>
+                
+                <form action="{{ url_for('main.contact') }}" method="POST" class="needs-validation trigger-loading" novalidate>
+                    <div class="row g-4">
+                        <!-- Name -->
+                        <div class="col-md-6">
+                            <label for="name" class="form-label font-weight-semibold">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-user"></i></span>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required minlength="2">
+                                <div class="invalid-feedback">Please enter your name (minimum 2 characters).</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label for="email" class="form-label font-weight-semibold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-at"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div class="col-12">
+                            <label for="subject" class="form-label font-weight-semibold">Subject</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-circle-info"></i></span>
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Project inquiry, bug report, feedback..." required minlength="5">
+                                <div class="invalid-feedback">Please specify a subject (minimum 5 characters).</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div class="col-12">
+                            <label for="message" class="form-label font-weight-semibold">Your Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your thoughts here..." required minlength="10"></textarea>
+                            <div class="invalid-feedback">Please type a message (minimum 10 characters).</div>
+                        </div>
+                        
+                        <!-- Submit -->
+                        <div class="col-12 text-center mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-3 shadow-lg font-weight-bold">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

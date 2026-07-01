@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom pb-3 border-secondary">
+        <div>
+            {% if search_movie %}
+                <h2 class="text-white mb-1"><i class="fa-solid fa-circle-nodes text-danger me-2"></i>Similar to: <span class="text-danger">{{ search_movie['Movie Title'] }}</span></h2>
+                <p class="text-muted mb-0">Hybrid recommendations based on plot similarities (Age Suitability: <span class="badge bg-secondary">{{ age_group }}</span>)</p>
+            {% else %}
+                <h2 class="text-white mb-1"><i class="fa-solid fa-list-check text-danger me-2"></i>Personalized Recommendations</h2>
+                <p class="text-muted mb-0">Showing top matching movies for <span class="badge bg-danger">{{ age_group }}</span> in <span class="badge bg-danger">{{ language_name }}</span> (Genre: {{ preferred_genre }})</p>
+            {% endif %}
+        </div>
+        
+        <!-- View and Change Choices -->
+        <div class="d-flex gap-2 mt-3 mt-md-0">
+            <div class="btn-group shadow" role="group" aria-label="Layout toggle">
+                <button type="button" class="btn btn-outline-light active" id="btn-grid-view" title="Grid View">
+                    <i class="fa-solid fa-grip"></i>
+                </button>
+                <button type="button" class="btn btn-outline-light" id="btn-list-view" title="List View">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+            </div>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary"><i class="fa-solid fa-rotate-left me-2"></i>Wizard</a>
+        </div>
+    </div>
+
+    <!-- Filter Chips Container -->
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-4" id="filter-chips-container" style="display: none !important;">
+        <span class="text-muted small me-1">Active Filters:</span>
+        <div class="d-flex flex-wrap gap-2" id="filter-chips-list">
+            <!-- Dynamically populated chips -->
+        </div>
+        <button class="btn btn-link btn-sm text-danger p-0 ms-2 text-decoration-none" id="btn-clear-all-filters">Clear All</button>
+    </div>
+
+    {% if movies %}
+        <!-- Hidden source JSON of all movies for JS filtering & pagination -->
+        <script id="movies-data-json" type="application/json">
+            {{ movies | tojson }}
+        </script>
+
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="glass-card p-4 sticky-lg-top shadow-xl" style="top: 90px; z-index: 10;">
+                    <h5 class="text-white mb-3 border-bottom pb-2 border-secondary d-flex justify-content-between align-items-center">
+                        <span><i class="fa-solid fa-filter text-danger me-2"></i>Interactive Filters</span>
+                        <button class="btn btn-link btn-sm text-muted p-0 text-decoration-none d-lg-none" id="sidebar-toggle-close"><i class="fa-solid fa-xmark"></i></button>
+                    </h5>
+                    
+                    <!-- Search within results -->
+                    <div class="mb-3">
+                        <label for="filterSearch" class="form-label small text-muted">Search Title</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control bg-dark border-secondary text-white" id="filterSearch" placeholder="Filter results...">
+                        </div>
+                    </div>
+                    
+                    <!-- Genre Multi-Select -->
+                    <div class="mb-4">
+                        <label class="form-label small text-muted">Genres</label>
+                        <div class="filter-genre-list overflow-y-auto px-1" style="max-height: 150px; scrollbar-width: thin;">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Min Rating Slider -->
+                    <div class="mb-4">
+                        <div class="range-slider-label">
+                            <span>Min Rating</span>
+                            <span class="text-orange font-weight-bold" id="ratingValue">0.0</span>
+                        </div>
+                        <input type="range" class="form-range" id="ratingFilter" min="0" max="10" step="0.5" value="0">
+                    </div>
+                    
+                    <!-- Min Release Year Slider -->
+                    <div class="mb-4">
+                        <div class="range-slider-label">
+                            <span>Min Release Year</span>
+                            <span class="text-orange font-weight-bold" id="yearValue">1900</span>
+                        </div>
+                        <input type="range" class="form-range" id="yearFilter" min="1900" max="2026" step="1" value="1900">
+                    </div>
+                    
+                    <!-- Sort By -->
+                    <div class="mb-3">
+                        <label for="sortBySelect" class="form-label small text-muted">Sort By</label>
+                        <select class="form-select form-select-sm" id="sortBySelect">
+                            <option value="score">Match Score</option>
+                            <option value="rating">Rating</option>
+                            <option value="popularity">Popularity</option>
+                            <option value="year">Release Year</option>
+                            <option value="runtime">Runtime</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort Order Toggle -->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="sortOrderSwitch" checked>
+                            <label class="form-check-label small text-muted" for="sortOrderSwitch" id="sortOrderLabel">Descending</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movie Grid/List Column -->
+            <div class="col-lg-9">
+                <!-- Skeleton Loader Shimmer Container (Visible during filter changes) -->
+                <div id="movies-skeleton-container" class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4 d-none">
+                    {% for i in range(6) %}
+                        <div class="col">
+                            <div class="skeleton-card rounded overflow-hidden shadow">
+                                <div class="skeleton-shimmer skeleton-poster"></div>
+                                <div class="p-3">
+                                    <div class="skeleton-shimmer skeleton-line w-75 mb-2"></div>
+                                    <div class="skeleton-shimmer skeleton-line w-50 mb-3"></div>
+                                    <div class="skeleton-shimmer skeleton-line w-100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- No Results fallback -->
+                <div id="no-filter-results" class="d-none text-center py-5">
+                    <i class="fa-solid fa-triangle-exclamation text-warning fs-1 mb-3"></i>
+                    <h3 class="text-white">No Movies Match Your Criteria</h3>
+                    <p class="text-muted">Try resetting or relaxing the interactive filters on the left.</p>
+                    <button class="btn btn-outline-light mt-2" id="btn-reset-filters-cta">Reset All Filters</button>
+                </div>
+
+                <!-- Actual Movies Container -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4" id="movies-render-container">
+                    <!-- Cards will be dynamically injected, filtered, and paginated by main.js -->
+                </div>
+
+                <!-- Pagination Container -->
+                <nav class="mt-5 d-flex justify-content-center" id="pagination-nav">
+                    <ul class="pagination pagination-danger shadow">
+                        <!-- Populated dynamically via JS -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty Recommendations Fallback -->
+        <div class="text-center py-5">
+            <i class="fa-solid fa-film text-muted fs-1 mb-3"></i>
+            <h3 class="text-white">No Movies Found</h3>
+            <p class="text-muted">We couldn't find any recommendations matching your parameters in our database. Try changing your selection!</p>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-3"><i class="fa-solid fa-rotate-left me-2"></i>Go Back</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

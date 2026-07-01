@@ -1,0 +1,558 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg-slate: #0F172A;
+    --bg-charcoal: #111827;
+    --bg-card: rgba(31, 41, 55, 0.45);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-crimson: #EF4444;
+    --accent-orange: #F97316;
+    --accent-cyan: #06B6D4;
+    --text-white: #FFFFFF;
+    --text-muted: #9CA3AF;
+    --glow-color: rgba(239, 68, 68, 0.15);
+}
+
+/* =========================================================================
+   1. CORE STYLE RESETS
+   ========================================================================= */
+body {
+    background-color: var(--bg-slate);
+    background-image: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.9) 0%, rgba(17, 24, 39, 1) 90%);
+    color: var(--text-white);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+}
+
+/* Clean Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-charcoal);
+}
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-crimson);
+}
+
+/* Keyboard Accessibility State */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent-cyan) !important;
+    outline-offset: 3px !important;
+}
+
+/* =========================================================================
+   2. NAVBAR & HEADER
+   ========================================================================= */
+.navbar {
+    background-color: rgba(17, 24, 39, 0.8) !important;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 15px 0;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 900;
+    font-size: 1.6rem;
+    letter-spacing: -0.5px;
+    color: var(--accent-crimson) !important;
+    display: flex;
+    align-items: center;
+}
+.navbar-brand span {
+    color: var(--text-white);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--text-muted) !important;
+    padding: 8px 16px !important;
+    border-radius: 8px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+.nav-link:hover, .nav-link.active {
+    color: var(--text-white) !important;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background-color: var(--accent-crimson);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Search Wrapper inside Navbar */
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+.nav-search-input {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-white) !important;
+    padding-left: 40px !important;
+    padding-right: 35px !important;
+    border-radius: 30px !important;
+    height: 40px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease !important;
+}
+.nav-search-input:focus {
+    border-color: var(--accent-crimson) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25) !important;
+    background-color: rgba(17, 24, 39, 0.9) !important;
+}
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 0.85rem;
+}
+.search-clear-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.search-clear-btn:hover {
+    color: var(--text-white);
+}
+
+/* =========================================================================
+   3. AUTOCOMPLETE DROPDOWN SUGGESTIONS
+   ========================================================================= */
+.autocomplete-dropdown {
+    background-color: #111827 !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 12px !important;
+    margin-top: 8px !important;
+    padding: 8px 0 !important;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+.autocomplete-dropdown .dropdown-item {
+    color: var(--text-muted) !important;
+    transition: all 0.2s ease;
+}
+.autocomplete-dropdown .dropdown-item:hover,
+.autocomplete-dropdown .dropdown-item:focus {
+    background-color: #1f2937 !important;
+    color: var(--text-white) !important;
+}
+.autocomplete-fallback {
+    width: 32px;
+    height: 48px;
+    background-color: #1f2937;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+/* =========================================================================
+   4. HERO LANDING SECTION
+   ========================================================================= */
+.hero-section {
+    background: radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.1) 0%, rgba(15, 23, 42, 0) 50%),
+                linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 1) 100%),
+                url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80&w=1600') no-repeat center center;
+    background-size: cover;
+    min-height: 80vh;
+    padding: 100px 0;
+    overflow: hidden;
+}
+.hero-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.7);
+    z-index: 1;
+}
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+.hero-title span {
+    background: linear-gradient(135deg, var(--accent-crimson) 0%, var(--accent-orange) 50%, var(--accent-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero-card-stack {
+    height: 380px;
+}
+.hero-card {
+    position: absolute;
+    width: 220px;
+    aspect-ratio: 2/3;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.5s ease;
+}
+.hero-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hero-card-1 {
+    transform: rotate(-10deg) translate(-40px, 40px);
+    z-index: 1;
+}
+.hero-card-2 {
+    transform: rotate(5deg) translate(80px, 10px);
+    z-index: 3;
+}
+.hero-card-3 {
+    transform: rotate(-3deg) translate(200px, 60px);
+    z-index: 2;
+    opacity: 0.6;
+}
+
+/* =========================================================================
+   5. GLASSMORPHISM CARDS & FORMS
+   ========================================================================= */
+.glass-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+.glass-card:hover {
+    box-shadow: 0 10px 40px var(--glow-color);
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.form-select, .form-control {
+    background-color: rgba(17, 24, 39, 0.8) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-white) !important;
+    border-radius: 10px !important;
+    padding: 14px 18px !important;
+    transition: all 0.3s ease !important;
+}
+.form-select:focus, .form-control:focus {
+    border-color: var(--accent-crimson) !important;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Range Sliders */
+.form-range::-webkit-slider-thumb {
+    background: var(--accent-crimson) !important;
+}
+.form-range::-moz-range-thumb {
+    background: var(--accent-crimson) !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-crimson) 0%, var(--accent-orange) 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+.btn-primary:hover {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.45) !important;
+    transform: translateY(-2px);
+}
+.btn-outline-light {
+    border-radius: 10px !important;
+    border-color: var(--border-color) !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    transition: all 0.3s ease !important;
+}
+.btn-outline-light:hover, .btn-outline-light.active {
+    background-color: var(--text-white) !important;
+    color: var(--bg-slate) !important;
+    transform: translateY(-2px);
+}
+
+/* =========================================================================
+   6. MOVIE CARDS (Grid & List Layouts)
+   ========================================================================= */
+.movie-card {
+    background-color: var(--bg-charcoal);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+.movie-card:hover {
+    transform: translateY(-8px) scale(1.015);
+    border-color: var(--accent-crimson);
+    box-shadow: 0 12px 35px var(--glow-color);
+}
+.movie-poster-container {
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    background-color: #000;
+}
+.movie-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+.movie-card:hover .movie-poster {
+    transform: scale(1.06);
+}
+
+.movie-rating-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(239, 68, 68, 0.95);
+    color: white;
+    padding: 4px 10px;
+    font-weight: 800;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+.movie-match-score {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(16, 185, 129, 0.95);
+    color: white;
+    padding: 4px 10px;
+    font-weight: 800;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+/* Card details and horizontal row structure */
+.movie-card.list-card {
+    border-radius: 12px;
+}
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.text-truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.leading-relaxed {
+    line-height: 1.6;
+}
+
+/* =========================================================================
+   7. SKELETON SHIMMER LOADER
+   ========================================================================= */
+.skeleton-card {
+    background-color: var(--bg-charcoal);
+    border: 1px solid var(--border-color);
+    height: 380px;
+}
+.skeleton-poster {
+    height: 250px;
+}
+.skeleton-line {
+    height: 16px;
+    border-radius: 4px;
+}
+.skeleton-shimmer {
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+@keyframes loading-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* =========================================================================
+   8. ACTIVE FILTER CHIPS
+   ========================================================================= */
+.filter-chip {
+    transition: all 0.2s ease;
+}
+.filter-chip i:hover {
+    color: var(--accent-crimson) !important;
+}
+
+/* =========================================================================
+   9. GLOBAL MOVIE MODAL
+   ========================================================================= */
+.modal-header-image-container {
+    height: 280px;
+    background-color: #000;
+}
+.modal-backdrop-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.45;
+}
+.modal-backdrop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(17, 24, 37, 0) 0%, rgba(17, 24, 39, 1) 100%);
+}
+.modal-poster-wrapper {
+    max-width: 180px;
+    margin: 0 auto;
+    border: 2px solid var(--border-color);
+}
+
+/* =========================================================================
+   10. FLOATING BACK TO TOP BUTTON
+   ========================================================================= */
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================================================
+   11. LOADING & OFFLINE OVERLAYS
+   ========================================================================= */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+#loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#offline-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+#offline-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================================================
+   12. MICRO INTERACTIONS & MISC
+   ========================================================================= */
+.cursor-pointer {
+    cursor: pointer;
+}
+.font-weight-black {
+    font-weight: 900;
+}
+.font-weight-bold {
+    font-weight: 700;
+}
+.font-weight-semibold {
+    font-weight: 600;
+}
+.bg-darker {
+    background-color: #0c101d !important;
+}
+.bg-slate {
+    background-color: var(--bg-slate) !important;
+}
+.lead {
+    font-size: 1.15rem;
+}
+.footer {
+    background-color: #0a0e1a;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+.clear-recent-btn {
+    font-size: 0.75rem;
+}
+.clear-recent-btn:hover {
+    color: var(--accent-crimson) !important;
+}
+.letter-spacing {
+    letter-spacing: 0.1em;
+}
+.text-danger-hover:hover {
+    color: var(--accent-crimson) !important;
+}
+
+/* Carousel controls hover transition */
+.movie-card.sim-card:hover img {
+    transform: scale(1.05);
+}
